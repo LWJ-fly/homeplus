@@ -1,0 +1,86 @@
+/* 这是导航栏的样式 */
+.nav {
+    float: right;
+    padding-right: 180px;
+}
+
+.nav li a {
+    text-decoration: none;
+}
+.nav li a:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.nav .next-menu {
+    padding-left: 15px;
+    display: none;
+    z-index: 100;
+    position: relative;
+}
+.nav .next-menu li {
+    width: 60px;
+    height: 30px;
+    line-height: 30px;
+    list-style: none;
+}
+.nav .next-menu li a {
+    color: #777;
+}
+.space:hover .next-menu {
+    display: block;
+    position: absolute;
+}
+
+.container {
+    max-width: 700px;
+}
+h3 {
+    color: #0084ff;
+    font-weight: bold;
+}
+thead {
+    background-color: #f1f5f8;
+}
+#status {
+    position: relative;
+}
+#status>ul {
+    position: absolute;
+    z-index: 100;
+    padding-left: 0px;
+    display: none;
+}
+#status>ul>li {
+    list-style: none;
+    margin-top: 5px;
+}
+
+/* 页码的样式 */
+.page {
+    float: right;
+    margin-top: 10px;
+}
+.prev, .next {
+    display: inline-block;
+    width: 60px;
+    height: 26px;
+    border: 1px solid #888888;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.next {
+    margin-right: 20px;
+}
+#pageNum {
+    width: 26px;
+}
+#confPageNum {
+    width: 52px;
+    height: 26px;
+    color: #fff;
+    background-color: #0084ff;
+    border: 0px;
+    border-radius: 5px;
+}

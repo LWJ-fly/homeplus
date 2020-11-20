@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人认证</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <script src="../js/jquery.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <style>
+        .container {
+            max-width: 500px;
+        }
+        h3 {
+            color: #0084ff;
+            font-weight: bold;
+        }
+        label {
+            font-weight: lighter;
+        }
+        form>div {
+            margin-top: 20px;
+        }
+        .btn {
+            margin-left: 35%;
+        }
+
+        /* 手持身份证的样式 */
+        #myFile, #certifyFile {
+            opacity: 0;
+        }
+        img {
+            width: 120px;
+            height: 120px;
+            border: 1px solid #f7f7f7;
+            margin-top: 10px;
+        }
+        .upload-label{
+            text-align: center;
+            background-color: #0084ff;
+            color: #fff;
+            display: block;
+            width: 120px;
+            height: 35px;
+            line-height: 35px;
+        }
+        .col-md-6 {
+            width: 200px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3>家政人员认证</h3>
+    <div class="certify-info" style="color: #0084ff; width: 100%; height: 100px; line-height: 100px; text-align: center; font-size: 40px; font-weight: bold">
+        认证成功 √
+    </div>
+    <form id="certify" action="#" method="post" enctype="multipart/form-data">
+        <div>
+            <label for="">真实姓名:</label>
+            <div>
+                <input name="name" type="text" class="form-control">
+            </div>
+        </div>
+        <div>
+            <label for="">身份证号:</label>
+            <div>
+                <input name="cardID" type="text" class="form-control">
+            </div>
+        </div>
+        <div>
+            <div class="col-md-6">
+                <label for="">手持身份证:</label>
+                <div>
+                    <label class="upload-label" for="myFile">上传手持身份证图片</label>
+                    <img for="myFile" id="head-img" src="../images/list-head.png" alt="默认图片">
+                    <input name="cardPhoto" type="file" id="myFile">
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="">资格照片:</label>
+                <div>
+                    <label class="upload-label" for="certifyFile">上传资格图片</label>
+                    <img for="certifyFile" id="certify-img" src="../images/list-head.png" alt="默认图片">
+                    <input name="certifyPhoto" type="file" id="certifyFile">
+                </div>
+            </div>
+        </div>
+        <div>
+            <button class="submit-certify btn btn-primary">确认修改</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+
+        previewCardFile();
+        previewCertifyFile();
+
+        loadCertify();
+        loadCertifyStatus();
+
+        // 点击发送认证
+        $(".submit-certify").click(function () {
+            certifyHousekeeper();
+        })
+    })
+
+    // 加载家政人员的认证状态
+    function loadCertifyStatus() {
+        $.ajax ({
+            "url": "hk/getCertifyStatus",
+            "type": "Post",
+            "success": function (json) {
+                if (json.state == 200) {
+                    if (json.data == 1) {
+                        $(".certify-info").show();
+                        $("#certify input").attr("readonly","readonly");
+                    } else if (json.data == 0) {
+                        $(".certify-info").text("还未提交认证资料")
+                        $(".certify-info").show()
+                        $("#certify").show();
+                    } else if (json.data == 2) {
+                        $(".certify-info").text("审核中...")
+                        $(".certify-info").show();
+                        $("#certify input").attr("readonly","readonly");
+                    }
+                }
+            }
+        })
+    }
+
+    // 家政人员认证
+    function certifyHousekeeper() {
+        var url = "hk/certifyHKPerson";
+        var formData = new FormData($("#certify")[0]);
+        $.ajax ({
+            "url": url,
+            "data": formData,
+            "dataType": "json",
+            "type": "Post",
+            "contentType": false,
+            "processData": false,
+            "success": function (json) {
+                if (json.state == 200) {
+                    alert("已经开始认证...");
+                } else {
+                    alert();
+                }
+            }
+        })
+    }
+
+    // 加载认证信息...
+    function loadCertify() {
+        var url = "hk/getHKPerson";
+        $.ajax({
+            "url": url,
+            "dataType": "json",
+            "type": "Post",
+            "success": function (json) {
+                if (json.state == 200) {
+                    var data = json.data;
+                    $("input[name='name']").val(data.hkName);
+                    $("input[name='cardID']").val(data.hkCardID);
+                    $("#head-img").attr("src", "../" + data.hkCardPhoto);
+                    $("#certify-img").attr("src", "../" + data.hkCertifyPhoto);
+                }
+            }
+        })
+    }
+
+    // 预览身份证
+    function previewCardFile() {
+        var file = document.getElementById("myFile");
+        file.onchange = function(){  // 文本框内容改变时触发
+            var files = this.files; // 获取文件的数量
+            for(var i=0;i<files.length;i++){
+                readers(files[i])
+            }
+        }
+        function readers(file){
+            var reader = new FileReader();  // 异步读取存储在用户计算机上的文件
+            reader.readAsDataURL(file); // 开始读取指定的Blob对象或File对象中的内容
+            reader.onload = function(){
+                document.getElementById("head-img").src = reader.result;  // 添加图片到指定容器中
+            };
+        }
+    }
+
+    function previewCertifyFile() {
+        var file = document.getElementById("certifyFile");
+        file.onchange = function(){  // 文本框内容改变时触发
+            var files = this.files; // 获取文件的数量
+            for(var i=0;i<files.length;i++){
+                readers(files[i])
+            }
+        }
+        function readers(file){
+            var reader = new FileReader();  // 异步读取存储在用户计算机上的文件
+            reader.readAsDataURL(file); // 开始读取指定的Blob对象或File对象中的内容
+            reader.onload = function(){
+                document.getElementById("certify-img").src = reader.result;  // 添加图片到指定容器中
+            };
+        }
+    }
+</script>
+

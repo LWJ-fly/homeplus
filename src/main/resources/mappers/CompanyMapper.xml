@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 对用户的数据操作 -->
+<mapper namespace="dao.CompanyMapper">
+
+    <select id="getCompanyByStatus" resultType="pojo.Company">
+        SELECT
+          id AS id,
+          name AS name,
+          phone AS phone,
+          address AS address,
+          busRegNum AS busRegNum,
+          busLicPhoto AS busLicPhoto,
+          company_status AS companyStatus
+        FROM
+          company
+        WHERE
+          company_status = #{status}
+    </select>
+
+    <insert id="certifyCompany" parameterType="pojo.Company" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO company (
+          name,
+          phone,
+          address,
+          busRegNum,
+          busLicPhoto,
+          company_status
+        ) VALUES (
+          #{name},
+          #{phone},
+          #{address},
+          #{busRegNum},
+          #{busLicPhoto},
+          #{companyStatus}
+        )
+    </insert>
+
+    <select id="getCompanyListByStatus" resultType="pojo.Company">
+        SELECT
+          id AS id,
+          name AS name,
+          phone AS phone,
+          address AS address,
+          busRegNum AS busRegNum,
+          busLicPhoto AS busLicPhoto,
+          company_status AS companyStatus
+        FROM
+          company
+        WHERE
+          company_status != 0
+    </select>
+
+    <select id="getCompanyByID" resultType="pojo.Company">
+        SELECT
+          id AS id,
+          name AS name,
+          phone AS phone,
+          address AS address,
+          busRegNum AS busRegNum,
+          busLicPhoto AS busLicPhoto,
+          company_status AS companyStatus
+        FROM
+          company
+        WHERE
+          id = #{id}
+    </select>
+
+    <update id="updateCompanyStatusByID">
+        UPDATE
+          company
+        SET
+          company_status = #{status}
+        WHERE
+          id = #{id}
+    </update>
+</mapper>

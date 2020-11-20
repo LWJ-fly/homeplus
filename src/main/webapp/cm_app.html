@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>预约</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/appointment.css">
+    <link rel="stylesheet" href="css/sweetalert.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/sweeralert.min.js"></script>
+    <style>
+        .confirm {
+            height: 20px;
+            padding-top: 0px;
+            margin-left: 100px;
+        }
+    </style>
+</head>
+<body>
+<!-- 页面上的最上面导航 -->
+<nav class="navbar navbar-default">
+    <div class="navbar-header">
+        <a href="index.html"></a>
+    </div>
+
+    <div>
+        <ul class="nav navbar-nav">
+            <li>
+                <a href="index.html">
+                    <span class="glyphicon glyphicon-home"></span>
+                    首页
+                </a>
+            </li>
+            <li class="register">
+                <a href="register.html">
+                    <span class="glyphicon glyphicon-user"></span>
+                    注册
+                </a>
+            </li>
+            <li class="log-in">
+                <a href="login.html">
+                    <span class="glyphicon glyphicon-log-in"></span>
+                    登录
+                </a>
+            </li>
+            <li class="log-out">
+                <a href="login.html">
+                    <span class="glyphicon glyphicon-log-out"></span>
+                    退出
+                </a>
+            </li>
+            <li class="space">
+                <a href="#">个人中心</a>
+                <ul class="next-menu">
+                    <li>
+                        <a href="person.html">个人资料</a>
+                    </li>
+                    <li>
+                        <a href="order.html">我的订单</a>
+                    </li>
+                    <li>
+                        <a href="cm_app.html">我的预约</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="space">
+                <a href="#">家政人员中心</a>
+                <ul class="next-menu">
+                    <li>
+                        <a href="hk_person.html">商家资料</a>
+                    </li>
+                    <li>
+                        <a href="hk_app.html">预约列表</a>
+                    </li>
+                    <li>
+                        <a href="hk_order.html">我的订单</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+    <div class="container">
+        <h3>我的预约</h3>
+        <div>
+            <table class="table table-condensed table-hover ">
+                <thead>
+                    <tr style="height: 50px; line-height: 50px; background-color: #0084ff; color: #fff">
+                        <th>编号</th>
+                        <th>预约类型</th>
+                        <th>预约的地点</th>
+                        <th>预约时间</th>
+                        <th>预约状态</th>
+                        <th>查看</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+            <ul class="page">
+                <span class="prev" style="margin-right: 10px">&laquo;上一页</span>
+                <span class="next">下一页&raquo;</span>
+                <span>
+                        共<span>0</span>页
+                    </span>
+                <span>
+                        到第
+                        <input id="pageNum" type="text">
+                        页
+                    </span>
+                <span>
+                        <input id="confPageNum" type="button" value="确定">
+                    </span>
+            </ul>
+        </div>
+
+        <!-- 模态框 -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            预约详情
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="#" role="form">
+                            <div class="form-group">
+                                <div class="input-line">
+                                    预约类型：
+                                    <input  class="type form-control" type="text" readonly="readonly">
+                                </div>
+
+                                <div class="input-line">
+                                    预约的地点：
+                                    <input class="address form-control" type="text" readonly="readonly">
+                                </div>
+
+                                <div class="input-line">
+                                    预约的时间：
+                                    <input class="beginTime form-control" type="text" readonly="readonly">
+                                </div>
+
+                                <div class="input-line">
+                                    预约的状态：
+                                    <input class="app-status form-control" type="text" readonly="readonly">
+                                </div>
+
+                                <div class="input-line">
+                                    候选人：
+                                    <ul class="apply-list">
+                                        <!--<li><a href="#">家政人员01</a><button class="confirm btn btn-primary">就你了</button></li>-->
+                                        <!--<li><a href="#">家政人员01</a><button class="confirm btn btn-primary">就你了</button></li>-->
+                                        <!--<li><a href="#">家政人员01</a><button class="confirm btn btn-primary">就你了</button></li>-->
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        loginSuccess();
+        $(".log-out").click (function () {
+            logout();
+        })
+        loadApp();
+    })
+
+    function loadApp() {
+        var url = "app/getAppCustomer";
+        $.ajax ({
+            "url": url,
+            "type": "Post",
+            "success": function (json) {
+                if (json.state == 200) {
+                    var list = json.data;
+                    for (var i = 0; i < list.length; i++) {
+                        var optionData = "<tr>\n" +
+                                        "<th>#{index}</th>\n" +
+                                        "<th>#{type}</th>\n" +
+                                        "<th>#{address}</th>\n" +
+                                        "<th>#{beginTime}</th>\n" +
+                                        "<th>#{status}</th>\n" +
+                                        "<th>\n" +
+                                        "<button id='#{id}' class=\"see btn btn-primary\">查看</button>\n" +
+                                        "</th>\n" +
+                                        "<th>\n" +
+                                        "<button id='#{op-id}' class=\"operate btn btn-primary\">#{operation}</button>\n" +
+                                        "</th>\n" +
+                                        "</tr>";
+                        if (list[i].appStatus == 1) {
+                            if (list[i].applyList.length <= 0) {
+                                optionData = optionData.replace("#{status}", "无人问津");
+                                optionData = optionData.replace("#{operation}", "取消");
+                            } else {
+                                optionData = optionData.replace("#{status}", "有人投了");
+                                optionData = optionData.replace("#{operation}", "删除");
+                            }
+                        } else {
+                            optionData = optionData.replace("#{status}", "已完成");
+                            optionData = optionData.replace("#{operation}", "删除");
+                        }
+                        optionData = optionData.replace("#{index}", i+1);
+                        optionData = optionData.replace("#{type}", list[i].appType);
+                        optionData = optionData.replace("#{address}", list[i].appAddress);
+                        optionData = optionData.replace("#{beginTime}", formatDate(list[i].appBeginTime));
+                        optionData = optionData.replace("#{id}", list[i].id);
+                        optionData = optionData.replace("#{op-id}", list[i].id);
+                        $("tbody").append(optionData);
+                    }
+                    showModal();
+                    operateApp();
+                }
+
+            }
+        })
+    }
+
+    function showModal() {
+        $(".see").parent().on("click", "button", function () {
+            var idVal = $(this).attr("id");
+            var data = "id=" + $(this).attr("id");
+            $.ajax({
+                "url": "app/getSingleApp",
+                "data": data,
+                "dataType": "json",
+                "type": "Post",
+                "success": function (json) {
+                    var data = json.data;
+                    $(".type").val(data.appType);
+                    $(".address").val(data.appAddress);
+                    $(".beginTime").val(formatDate(data.appBeginTime));
+                    if (data.appStatus == 0) {
+                        $(".app-status").val("结束了");
+                        $(".apply-list").html(appendList("", ""));
+                    } else {
+                        $(".app-status").val("还没结束");
+                        $(".apply-list").html(appendList(data.applyNameList, data.applyList));
+                    }
+                    $(".address").val(data.appAddress);
+                    confirmHK(idVal);
+                }
+            })
+            $("#myModal").modal("show");
+        });
+    }
+
+    function operateApp() {
+        $(".operate").parent().on("click", "button", function () {
+            var idVal = $(this).attr("id");
+            if ($(this).text() == "删除") {
+                alert("删除")
+                deleteApp($(this), idVal);
+            } else if ($(this).text() == "取消") {
+                alert("取消" + idVal)
+                cancelApp($(this), idVal);
+            }
+        })
+    }
+
+    function deleteApp(container, id) {
+        $.ajax ({
+            "url": "app/deleteApp",
+            "data": "id=" + id,
+            "dataType": "json",
+            "type": "Post",
+            "success": function (json) {
+                if (json.state == 200) {
+                    swal({
+                        title: "提示",
+                        text: "删除成功！"
+                    })
+                }
+                container.parent().parent().remove();
+            }
+        })
+    }
+
+    function cancelApp(container, id) {
+        $.ajax ({
+            "url": "app/updateAppStatus",
+            "data": "id=" + id,
+            "dataType": "json",
+            "type": "Post",
+            "success": function (json) {
+                if (json.state == 200) {
+                    swal({
+                        title: "提示",
+                        text: "取消成功！"
+                    })
+                    container.val("删除");
+                    $("#myModal").modal("hide");
+                }
+            }
+        })
+    }
+    
+    function confirmHK(id) {
+        $(".confirm").parent().on("click", "button", function () {
+            var url = "app/confirmHK";
+            var data = "id=" + id + "&hkID=" + $(this).attr("id");
+            $.ajax ({
+                "url": url,
+                "data": data,
+                "dataType": "json",
+                "type": "Post",
+                "success": function (json) {
+                    if (json.state == 200) {
+                        swal({
+                            titile: "提醒",
+                            text: "确定成功！"
+                        })
+                    }
+                }
+            })
+        })
+    }
+
+    function appendList(nameList, idList) {
+        var result = "";
+        for (var i = 0; i < nameList.length; i ++) {
+            result += "<li><a href=\"housekeeper.html\">" + nameList[i] + "</a><button id='" + idList[i] + "' class='confirm btn btn-primary'>就你了</button></li>";
+        }
+        return result;
+    }
+
+    function formatDate(mills) {
+        var newTime = new Date(mills);
+        var year = newTime.getFullYear();
+        var month = newTime.getMonth() + 1;
+        var day = newTime.getDate();
+        var hour = newTime.getHours();
+        var minute = newTime.getMinutes();
+        var second = newTime.getSeconds();
+        return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+    }
+
+    // 登录成功
+    function loginSuccess() {
+        $(".log-out").css({"display": "none"});
+        $.ajax({
+            "url": "user/loginSuccess",
+            "type": "Post",
+            "success": function (json) {
+                if (json.state == 200) {
+                    $(".log-out").css({"display": "block"});
+                    $(".log-in").css({"display": "none"});
+                    $(".register").css({"display": "none"});
+                }
+            }
+        })
+    }
+
+    // 退出系统
+    function logout() {
+        $.ajax ({
+            "url": "user/logout",
+            "type": "Post",
+            "success": function (json) {
+                if (json.state == 200) {
+                    alert("退出成功...");
+                }
+            }
+        })
+    }
+</script>

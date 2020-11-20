@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 后台管理员的数据操作 -->
+<mapper namespace="dao.TypeMapper">
+    <select id="getTypeNameByID" resultType="java.lang.String">
+        SELECT
+          name
+        FROM
+          type_detail
+        WHERE
+          id = #{id}
+    </select>
+
+    <select id="getTypeIDByName" resultType="java.lang.Integer">
+         SELECT
+          id
+        FROM
+          type_detail
+        WHERE
+          name = #{name}
+    </select>
+</mapper>

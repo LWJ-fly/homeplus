@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 对个人资料的数据操作 -->
+<mapper namespace="dao.HKPersonMapper">
+
+    <select id="selectHKByPhone" resultType = "pojo.HouseKeeper">
+        SELECT
+          hk_nickname AS hkNickname,
+          hk_name AS hkName,
+          hk_email AS hkEmail,
+          hk_phone AS hkPhone,
+          hk_password AS hkPassword,
+          hk_slogan AS hkSlogan,
+          hk_desc AS hkDesc,
+          hk_desc_detail AS hkDescDetail,
+          hk_label AS hkLabel,
+          hk_headPhoto AS hkHeadphoto,
+          hk_cardID AS hkCardID,
+          hk_status AS hkStatus,
+          hk_cardPhoto AS hkCardPhoto,
+          companyID AS companyID,
+          type_detail_id AS typeList,
+          hk_settle AS hkSettle,
+          hk_app_status AS hkAppStatus,
+          hk_certifyPhoto AS hkCertifyPhoto
+        FROM
+          housekeeper
+        WHERE
+          hk_phone = #{phone}
+    </select>
+
+    <update id="updateHK">
+        UPDATE
+          housekeeper
+        SET
+          hk_slogan = #{hkSlogan},
+          hk_desc = #{hkDesc},
+          hk_desc_detail = #{hkDescDetail},
+          type_detail_id = #{typeList},
+          companyID = #{companyID},
+          hk_settle = #{hkSettle}
+        WHERE
+          hk_phone = #{hkPhone}
+    </update>
+
+    <select id="selectHKStatusByPhone" resultType="java.lang.Integer">
+        SELECT
+          hk_status
+        FROM
+          housekeeper
+        WHERE
+          hk_phone = #{phone}
+    </select>
+
+    <update id="certifyHK" parameterType="pojo.HouseKeeper">
+        UPDATE
+          housekeeper
+        SET
+          hk_name = #{hkName},
+          hk_cardID = #{hkCardID},
+          hk_cardPhoto = #{hkCardPhoto},
+          hk_certifyPhoto = #{hkCertifyPhoto},
+          hk_status = #{hkStatus}
+        WHERE
+          hk_phone = #{hkPhone}
+    </update>
+
+    <select id="getHKListFuzzySelect" parameterType="java.lang.String" resultType="pojo.HouseKeeper">
+        SELECT
+          id,
+          hk_nickname AS hkNickname,
+          hk_name AS hkName,
+          hk_email AS hkEmail,
+          hk_sex AS hkSex,
+          hk_phone AS hkPhone,
+          hk_slogan AS hkSlogan,
+          hk_desc AS hkDesc,
+          hk_desc_detail AS hkDescDetail,
+          hk_label AS hkLabel,
+          hk_headPhoto AS hkHeadphoto,
+          hk_cardID AS hkCardID,
+          hk_status AS hkStatus,
+          hk_cardPhoto AS hkCardPhoto,
+          companyID AS companyID,
+          type_detail_id AS typeList,
+          hk_settle AS hkSettle
+        FROM
+          housekeeper
+        WHERE
+          type_detail_id
+        LIKE
+          CONCAT('%',#{typeID},'%')
+    </select>
+
+    <select id="getHousekeeperByID" resultType="pojo.HouseKeeper">
+        SELECT
+          id,
+          hk_nickname AS hkNickname,
+          hk_name AS hkName,
+          hk_sex AS hkSex,
+          hk_phone AS hkPhone,
+          hk_slogan AS hkSlogan,
+          hk_desc AS hkDesc,
+          hk_desc_detail AS hkDescDetail,
+          hk_label AS hkLabel,
+          hk_headPhoto AS hkHeadphoto,
+          hk_cardID AS hkCardID,
+          hk_status AS hkStatus,
+          hk_cardPhoto AS hkCardPhoto,
+          companyID AS companyID,
+          type_detail_id AS typeList,
+          hk_settle AS hkSettle,
+          hk_app_status AS hkAppStatus,
+          hk_certifyPhoto AS hkCertifyPhoto
+        FROM
+          housekeeper
+        WHERE
+          id = #{id}
+    </select>
+
+    <update id="updatePasswordByPhone">
+        UPDATE
+          housekeeper
+        SET
+          hk_password = #{newPassword}
+        WHERE
+          hk_phone = #{phone}
+    </update>
+
+    <select id="getAllHousekeeperByStatus" resultType="pojo.HouseKeeper">
+        SELECT
+          id AS id,
+          hk_name AS hkName,
+          hk_phone AS hkPhone,
+          hk_cardID AS hkCardID,
+          hk_status AS hkStatus,
+          hk_cardPhoto AS hkCardPhoto,
+          hk_certifyPhoto AS hkCertifyPhoto
+        FROM
+          housekeeper
+        WHERE
+          hk_status != 0
+    </select>
+
+    <update id="updateHousekeeperStatusByID">
+        UPDATE
+          housekeeper
+        SET
+          hk_status = #{status}
+        WHERE
+          id = #{id}
+    </update>
+
+    <update id="updateHousekeeperInfo">
+        UPDATE
+          housekeeper
+        SET
+          hk_nickname = #{hkNickname},
+          hk_email = #{hkEmail},
+          hk_headPhoto = #{hkHeadphoto}
+        WHERE
+          hk_phone = #{hkPhone}
+    </update>
+
+
+</mapper>

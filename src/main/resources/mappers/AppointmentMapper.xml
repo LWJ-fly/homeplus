@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 预约的数据操作 -->
+<mapper namespace="dao.AppointmentMapper">
+
+    <insert id="insertAppointment" parameterType="pojo.Appointment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO appointment (
+            cm_id,
+            app_type,
+            app_address,
+            app_phone,
+            app_beginTime
+        ) VALUES (
+            #{cmID},
+            #{appType},
+            #{appAddress},
+            #{appPhone},
+            #{appBeginTime}
+        )
+    </insert>
+
+    <select id="getCustomerIDByUsername" resultType="java.lang.Integer">
+        SELECT
+            id
+        FROM
+            customer
+        WHERE
+            cm_phone = #{username}
+    </select>
+
+    <select id="getStatusApp" resultType="pojo.Appointment">
+        SELECT
+          id AS id,
+          app_type AS appType,
+          app_address AS appAddress,
+          app_phone AS appPhone,
+          app_status AS appStatus,
+          app_beginTime AS appBeginTime,
+          apply_list AS applyJson
+        FROM
+          appointment
+        WHERE
+          app_status = #{status}
+    </select>
+
+    <select id="getAllApp" resultType="pojo.Appointment">
+        SELECT
+            id AS id,
+            app_type AS appType,
+            app_address AS appAddress,
+            app_phone AS appPhone,
+            app_status AS appStatus,
+            app_beginTime AS appBeginTime,
+            apply_list AS applyJson
+        FROM
+          appointment
+    </select>
+
+    <select id="getApplyList" resultType="java.lang.String">
+        SELECT
+          apply_list
+        FROM
+          appointment
+        WHERE
+          id = #{id}
+    </select>
+
+    <insert id="updateApplyList">
+        UPDATE
+          appointment
+        SET
+          apply_list = #{applyList}
+        WHERE
+          id = #{id}
+    </insert>
+
+    <select id="selectAppointByID" resultType="pojo.Appointment">
+        SELECT
+          id AS id,
+          app_type AS appType,
+          app_address AS appAddress,
+          app_phone AS appPhone,
+          app_status AS appStatus,
+          app_beginTime AS appBeginTime,
+          apply_list AS applyJson
+        FROM
+          appointment
+        WHERE
+          id = #{id}
+    </select>
+
+    <update id="updateAppointStatus" parameterType="java.lang.Integer">
+        UPDATE
+          appointment
+        SET
+          app_status = #{status}
+        WHERE
+          id = #{id}
+    </update>
+
+    <delete id="deleteAppointByID">
+        DELETE
+        FROM
+          appointment
+        WHERE
+          id = #{id}
+    </delete>
+
+    <insert id="insertHKID">
+        UPDATE
+          appointment
+        SET
+          app_hk_id = #{hkID}
+        WHERE
+          id = #{id}
+    </insert>
+
+    <select id="selectAppListByCmID" resultType="pojo.Appointment">
+        SELECT
+          id,
+          cm_id AS cmID,
+          app_beginTime AS appBeginTime,
+          app_type AS appType,
+          app_address AS appAddress,
+          app_phone AS appPhone,
+          app_status AS appStatus,
+          apply_list AS applyJson,
+          app_hk_id AS hkID
+        FROM
+          appointment
+        WHERE
+          cm_id = #{cm_id}
+    </select>
+</mapper>

@@ -1,0 +1,71 @@
+/* 这是导航栏的样式 */
+.nav {
+    float: right;
+    padding-right: 180px;
+}
+
+.nav li a {
+    text-decoration: none;
+}
+.nav li a:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.nav .next-menu {
+    padding-left: 15px;
+    display: none;
+    z-index: 100;
+    position: relative;
+}
+.nav .next-menu li {
+    width: 60px;
+    height: 30px;
+    line-height: 30px;
+    list-style: none;
+}
+.nav .next-menu li a {
+    color: #777;
+}
+.space:hover .next-menu {
+    display: block;
+    position: absolute;
+}
+
+.container {
+    max-width: 1000px;
+    margin-top: 25px;
+    margin-bottom: 50px;
+}
+.left-nav {
+    height: 500px;
+    padding-left: 30px;
+    background-color: #0084ff;
+    background-color: rgba(0, 132, 255);
+}
+.left-nav h3 {
+    color: #fff;
+    font-weight: bold;
+}
+.left-nav .one {
+    box-sizing: border-box;
+    border-left: 2px solid #fff;
+}
+.left-nav .list-group-item {
+    background-color: rgba(0, 0, 0, 0);
+}
+.left-nav li {
+    border: 0px;
+    height: 42px;
+    margin-left: 0px ;
+    color: #fff;
+    font-size: 16px;
+    text-decoration: none;
+}
+.left-nav li:hover {
+    cursor: pointer;
+}
+
+iframe {
+    padding-left: 30px;
+}

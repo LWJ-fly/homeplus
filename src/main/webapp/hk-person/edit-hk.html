@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商家资料</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/sweetalert.css">
+
+    <script src="../js/jquery.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sweeralert.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+    <style>
+        .container {
+            max-width: 700px;
+        }
+        .submit-update {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3 style="color: #0084ff; font-weight: bold">
+        商家资料
+    </h3>
+    <form action="#">
+        <div>
+            <label for="">宣传口号</label>
+            <div>
+                <input id="slogan" type="text" class="form-control">
+            </div>
+        </div>
+
+        <div>
+            <label for="">家政服务的简述</label>
+            <div>
+                <input id="desc" type="text" class="form-control">
+            </div>
+        </div>
+
+        <div>
+            <label for="">家政服务的详述</label>
+            <textarea id="desc_detail" class="form-control" rows="3" name=textarea></textarea>
+        </div>
+
+        <div>
+            <label for="">服务类别</label>
+            <select id="type" name="type" class="selectpicker show-tick form-control" multiple data-live-search="false">
+                <option value="1">小时工</option>
+                <option value="2">月嫂</option>
+                <option value="3">护工</option>
+                <option value="4">长期雇佣</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="">所在公司</label>
+            <select id="company" class="form-control">
+                <!--<option value="0">公司01</option>-->
+                <!--<option value="1">公司02</option>-->
+            </select>
+        </div>
+
+        <div>
+            <label for="">结算方式</label>
+            <select id="settle_type" class="form-control">
+                <option value="0">按单结算</option>
+                <option value="1">按小时结算</option>
+            </select>
+        </div>
+
+        <div>
+            <button class="submit-update btn btn-primary">确认修改</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+<script>
+    
+    $(document).ready(function () {
+        loadHK();
+        loadCompany();
+        $(".submit-update").click(function () {
+            updateHK();
+        })
+    })
+
+    function loadHK() {
+        $.ajax({
+            "url": "hk/getHKPerson",
+            "type": "Post",
+            "success": function (json) {
+                if (json.state == 200) {
+                    $("#slogan").val(json.data.hkSlogan);
+                    $("#desc").val(json.data.hkDesc);
+                    $("#desc_detail").val(json.data.hkDescDetail);
+                    $("#type").selectpicker('val', splitList(json.data.typeList));
+                }
+            }
+        })
+    }
+    
+    function updateHK() {
+        var url = "hk/updateHKPerson";
+        var data = "slogan=" + $("#slogan").val() + "&desc=" + $("#desc").val() + "&desc_detail="
+                + $("#desc_detail").val() + "&typelist=" + $("#type").val() + "&company="
+                + $("#company").val() + "&settle=" + $("#settle_type").val();
+        $.ajax ({
+            "url": url,
+            "data": data,
+            "dataType": "json",
+            "type": "Post",
+            "success": function (json) {
+                if (json.state == 200) {
+                    swal ({
+                        title: "提醒",
+                        text: "修改成功！"
+                    })
+                }
+            }
+        })
+    }
+
+    // 加载已经认证过的公司
+    function loadCompany() {
+        $.ajax({
+            "url": "company/getAllCertifyCompany",
+            "type": "Post",
+            "success": function (json) {
+                var list = json.data;
+                for (var i = 0; i < list.length; i ++) {
+                    var optionData = "<option value=\"#{id}\">#{name}</option>"
+                    optionData = optionData.replace("#{id}", list[i].id);
+                    optionData = optionData.replace("#{name}", list[i].name);
+                    $("#company").append(optionData);
+                }
+            }
+        })
+    }
+
+    function splitList(str) {
+        return str.split(",");
+    }
+    function ajaxFunc() {
+        $.ajax({
+            "url": url,
+            "data": data,
+            "dataType": dataType,
+            "type": type,
+            "success": function (json) {
+
+            }
+        })
+    }
+</script>

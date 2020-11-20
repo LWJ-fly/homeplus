@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 对用户的数据操作 -->
+<mapper namespace="dao.UserMapper">
+
+    <!-- 插入登录用户数据 -->
+    <!-- Integer insert(User user) -->
+    <insert id="insert" parameterType="pojo.User" useGeneratedKeys="true" keyProperty="id">
+        insert into login (
+            username,
+            password,
+            role
+        ) VALUES (
+            #{username},
+            #{password},
+            #{role}
+        )
+    </insert>
+
+    <select id="selectRole" resultType="java.lang.Integer">
+        SELECT
+          role
+        FROM
+          login
+        WHERE
+          username = #{username}
+    </select>
+
+    <!-- 注册时向 Customer 表中插入信息 -->
+    <insert id="insertCustomer" parameterType="pojo.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO customer (
+            cm_phone,
+            cm_password
+        ) VALUES (
+            #{username},
+            #{password}
+        )
+
+    </insert>
+
+    <select id="selectCmIDByPhone" resultType="java.lang.Integer">
+        SELECT
+          id
+        FROM
+          customer
+        WHERE
+          cm_phone = #{phone}
+    </select>
+
+
+    <select id="selectHKNameByHkID" resultType="java.lang.String">
+        SELECT
+          hk_name
+        FROM
+          housekeeper
+        WHERE
+          id = #{hkID}
+    </select>
+
+    <select id="selectHKNicknameByHkID" resultType="java.lang.String">
+        SELECT
+          hk_nickname
+        FROM
+          housekeeper
+        WHERE
+        id = #{hkID}
+    </select>
+
+    <select id="selectHKIDByPhone" resultType="java.lang.Integer">
+        SELECT
+          id
+        FROM
+          housekeeper
+        WHERE
+          hk_phone = #{hkPhone}
+    </select>
+
+    <insert id="insertHouseKeeper" parameterType="pojo.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO housekeeper (
+            hk_phone,
+            hk_password
+        ) VALUES (
+            #{username},
+            #{password}
+        )
+    </insert>
+
+    <select id="getUserByUsername" resultType="pojo.User">
+        SELECT
+            username,
+            password,
+            role
+        FROM
+            login
+        WHERE
+            username = #{username}
+    </select>
+
+    <select id="getPasswordByUsername" resultType="java.lang.String">
+        SELECT
+          password
+        FROM
+          login
+        WHERE
+          username = #{username}
+    </select>
+
+    <update id="updatePassword">
+        UPDATE
+          login
+        SET
+          password = #{newPassword}
+        WHERE
+          username = #{username}
+    </update>
+
+
+    <select id="selectPhoneByID" resultType="java.lang.String">
+        SELECT
+          username
+        FROM
+          login
+        WHERE
+          id = #{id}
+    </select>
+
+</mapper>

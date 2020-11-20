@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>消息界面</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <script src="../js/jquery.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sweeralert.min.js"></script>
+    <script src="../css/sweetalert.css"></script>
+    <style>
+        h3, h4 {
+            color: #0084ff;
+            font-weight: bold;
+        }
+        .news-head {
+            height: 40px;
+            line-height: 40px;
+            background-color: #efefef;
+            padding-left: 10px;
+        }
+        .news-head span {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>消息管理</h3>
+        <div class="container">
+            <h4>我的消息</h4>
+            <div class="news-head">
+                <select name="" id="">
+                    <option value="">全部</option>
+                    <option value="">已读</option>
+                    <option value="">未读</option>
+                </select>
+                <span>
+                    共 <label for="" class="num">0</label> 条消息
+                </span>
+            </div>
+            <div>
+                <table class="table table-condensed table-hover ">
+                    <thead>
+                        <tr>
+                            <th>消息内容</th>
+                            <th>时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!--<tr>-->
+                            <!--<th class="msg-content">周尔康最帅周尔康最帅周尔康最帅周尔康最帅周尔康最帅</th>-->
+                            <!--<th>2019/04/14 18:08</th>-->
+                            <!--<th>-->
+                                <!--<button class="see btn btn-primary">查看</button>-->
+                                <!--<button class="btn btn-primary">删除</button>-->
+                            <!--</th>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<th>周尔康最帅</th>-->
+                            <!--<th>2019/04/14 18:08</th>-->
+                            <!--<th>-->
+                                <!--<button class="see btn btn-primary">查看</button>-->
+                                <!--<button class="btn btn-primary">删除</button>-->
+                            <!--</th>-->
+                        <!--</tr>-->
+                    </tbody>
+                </table>
+            </div>
+    </div>
+    </div>
+</body>
+</html>
+<script>
+
+    $(document).ready(function () {
+        showAllMessage();
+        showContent();
+    })
+
+    // 展示所有的消息
+    function showAllMessage() {
+        var url = "message/getMessageByID";
+        $.ajax({
+            "url": url,
+            "dataType": "json",
+            "type": "Post",
+            "success": function (json) {
+                var list = json.data;
+                $(".num").text(list.length);
+                for (var i = 0; i < list.length; i ++) {
+                    var optionData = "<tr>\n" +
+                        "<th class=\"msg-content\">#{content}</th>\n" +
+                        "<th>#{createdDate}</th>\n" +
+                        "<th>\n" +
+                        "<button class=\"see btn btn-primary\" id='#{sid}'>查看</button>\n" +
+                        "<button class=\"delete btn btn-primary\" id='#{did}'>删除</button>\n" +
+                        "</th>\n" +
+                        "</tr>";
+                    optionData = optionData.replace("#{content}", showOmit(list[i].content));
+                    optionData = optionData.replace("#{createdDate}", formatDate(list[i].createdTime));
+                    optionData = optionData.replace("#{sid}", list[i].id);
+                    optionData = optionData.replace("#{did}", list[i].id);
+                    $("tbody").append(optionData);
+                    $(".see").parent().on("click", ".see", function () {
+                        showContent($(this))
+                    })
+
+                    $(".delete").parent().on("click", ".delete", function () {
+                        deleteSingleMessage($(this))
+                        $(this).parent().parent().remove();
+                    })
+                }
+            }
+        })
+    }
+
+    // 展示一条信息的内容
+    function showContent(elem) {
+        $.ajax({
+            "url": "getSingleMessage",
+            "data": "id=" + elem.attr("id"),
+            "dataType": "json",
+            "type": "Post",
+            "success": function (json) {
+                swal({
+                    title: "消息内容",
+                    text: json.data
+                })
+            }
+        })
+
+    }
+
+    // 删除一条消息
+    function deleteSingleMessage(elem) {
+        $.ajax({
+            "url": "deleteSingleMessage",
+            "data": "id=" + elem.attr("id"),
+            "dataType": "json",
+            "type": "Post",
+            "success": function (json) {
+                if (json.state == 200) {
+                    swal({
+                        title: "删除成功！",
+                        type: "success"
+                    })
+                }
+            }
+        })
+    }
+
+    // 展示简略的内容
+    function showOmit(str) {
+        var result = "";
+        if (str.length <= 20) {
+            result = str;
+        } else {
+            result = str.substr(0, 20);
+            result = result + ". . .";
+        }
+        return result;
+    }
+
+    function formatDate(mills) {
+        var newTime = new Date(mills);
+        var year = newTime.getFullYear();
+        var month = newTime.getMonth() + 1;
+        var day = newTime.getDate();
+        var hour = newTime.getHours();
+        var minute = newTime.getMinutes();
+        var second = newTime.getSeconds();
+        return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+    }
+</script>

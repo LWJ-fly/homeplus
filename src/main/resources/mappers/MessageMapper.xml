@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 对用户的数据操作 -->
+<mapper namespace="dao.MessageMapper">
+
+   <select id="getMessageByToID" resultType="pojo.Message">
+      SELECT
+        id AS id,
+        message_content AS content,
+        message_status AS messageStatus,
+        create_time AS createdTime,
+        from_id AS fromID,
+        to_id AS toID
+      FROM
+        message
+      WHERE
+        to_id = #{toID}
+   </select>
+
+    <insert id="insertMessage" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO message (
+          message_content,
+          create_time,
+          from_id,
+          to_id
+        ) VALUES (
+          #{content},
+          #{createdTime},
+          #{fromID},
+          #{toID}
+        )
+    </insert>
+</mapper>

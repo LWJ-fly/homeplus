@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单页</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/order.css">
+    <link rel="stylesheet" href="css/sweetalert.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/sweeralert.min.js"></script>
+</head>
+<body>
+    <!-- 页面上的最上面导航 -->
+    <nav class="navbar navbar-default">
+    <div class="navbar-header">
+        <a href="index.html"></a>
+    </div>
+
+    <div>
+        <ul class="nav navbar-nav">
+            <li>
+                <a href="index.html">
+                    <span class="glyphicon glyphicon-home"></span>
+                    首页
+                </a>
+            </li>
+            <li class="register">
+                <a href="register.html">
+                    <span class="glyphicon glyphicon-user"></span>
+                    注册
+                </a>
+            </li>
+            <li class="log-in">
+                <a href="login.html">
+                    <span class="glyphicon glyphicon-log-in"></span>
+                    登录
+                </a>
+            </li>
+            <li class="log-out">
+                <a href="login.html">
+                    <span class="glyphicon glyphicon-log-out"></span>
+                    退出
+                </a>
+            </li>
+            <li class="space">
+                <a href="#">个人中心</a>
+                <ul class="next-menu">
+                    <li>
+                        <a href="person.html">个人资料</a>
+                    </li>
+                    <li>
+                        <a href="order.html">我的订单</a>
+                    </li>
+                    <li>
+                        <a href="cm_app.html">我的预约</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="space">
+                <a href="#">家政人员中心</a>
+                <ul class="next-menu">
+                    <li>
+                        <a href="hk_person.html">商家资料</a>
+                    </li>
+                    <li>
+                        <a href="hk_app.html">预约列表</a>
+                    </li>
+                    <li>
+                        <a href="hk_order.html">我的订单</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+    <div class="container">
+        <h3>我的订单</h3>
+        <div>
+            <table class="table table-condensed table-hover ">
+                <thead>
+                    <tr style="height: 50px; line-height: 50px; background-color: #0084ff; color: #fff">
+                        <th>家政人员名称</th>
+                        <th>服务时长(小时)</th>
+                        <!--<th>实收金额(元)</th>-->
+                        <th id="status">状态
+                            <ul>
+                                <li>已完成</li>
+                                <li>未完成</li>
+                                <li>已取消</li>
+                            </ul>
+                        </th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+            <ul class="page">
+                <span class="prev" style="margin-right: 10px">&laquo;上一页</span>
+                <span class="next">下一页&raquo;</span>
+                <span>
+                    共<span class="pages">0</span>页
+                </span>
+                <span>
+                    到第
+                    <input id="pageNum" type="text">
+                    页
+                </span>
+                <span>
+                    <input id="confPageNum" type="button" value="确定">
+                </span>
+            </ul>
+
+            <!-- 模态框 -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                订单详情
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <form action="#" role="form">
+                                <div class="form-group">
+                                    <div class="input-line">
+                                        家政人员名称：
+                                        <input  class="name form-control" type="text" readonly="readonly">
+                                    </div>
+
+                                    <div class="input-line">
+                                        开始时间：
+                                        <input class="begin-time form-control" type="text" readonly="readonly">
+                                    </div>
+
+                                    <div class="input-line">
+                                        结束时间：
+                                        <input class="end-time form-control" type="text" readonly="readonly">
+                                    </div>
+
+                                    <div class="input-line">
+                                        地址：
+                                        <input class="address form-control" type="text" readonly="readonly">
+                                    </div>
+
+                                    <div class="input-line">
+                                        金额：
+                                        <input class="money form-control" type="text" readonly="readonly">
+                                    </div>
+
+                                    <div class="input-line">
+                                        订单状态：
+                                        <input class="status form-control" type="text" readonly="readonly">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                            </button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
+
+            <!-- 评价模态框 -->
+            <div class="modal fade" id="assessModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                            <h4 class="modal-title" id="assessModalLabel">
+                                评价订单
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <form action="#" role="form">
+                                <div class="form-group">
+
+                                    <div class="input-line">
+                                        评价星级：
+                                        <div class="radio">
+                                            <label class=".radio-inline col-md-4">
+                                                <input type="radio" name="assess" value="2" checked> 好评
+                                            </label>
+
+                                            <label class=".radio-inline col-md-4">
+                                                <input type="radio" name="assess" value="1"> 中评
+                                            </label>
+
+                                            <label class=".radio-inline col-md-4">
+                                                <input type="radio" name="assess" value="0"> 差评
+                                            </label>
+                                        </div>
+
+                                        <div class="input-line">
+                                            评价内容：
+                                            <textarea class="comment-content form-control" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                            </button>
+                            <button type="button" class="submit-assess btn btn-primary" data-dismiss="modal">提交
+                            </button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        loginSuccess();
+        $(".log-out").click (function () {
+            logout();
+        })
+
+        loadOrder(1);
+
+        $("#confPageNum").click(function () {
+            var pageNum = $("#pageNum").val();
+            var pages = $(".pages").text();
+            if (pageNum > pages) {
+                swal({
+                    title: "提醒",
+                    text: "超过了最大的页数"
+                })
+            } else {
+                loadOrder($("#pageNum").val())
+            }
+        })
+    })
+
+
+    // 加载订单
+    function loadOrder(x) {
+        $.ajax ({
+            "url": "order/getAllOrder",
+            "data": "pageNum=" + x,
+            "type": "Post",
+            "success": function (json) {
+                var list = json.data.list;
+                $("tbody").html("");
+                for (var i = 0; i < list.length; i ++) {
+                    var optionData = "<tr>\n" +
+                                    "<th>#{hk_name}</th>\n" +
+                                    "<th>#{order_dur}</th>\n" +
+                                    // "<th>#{order_money}</th>\n" +
+                                    "<th>#{order_status}</th>\n" +
+                                    "<th>\n" +
+                                    "<button id='#{btn-id}' class=\"#{btn-class} btn btn-primary\">#{btn_status}</button>\n" +
+                                    "</th>\n" +
+                                    "</tr>";
+                    if (list[i].orderStatus == 0) {
+                        optionData = optionData.replace("#{order_status}", "已完成");
+                        optionData = optionData.replace("#{order_dur}", list[i].orderDur);
+                        optionData = optionData.replace("#{order_money}", list[i].orderMoney)
+                        optionData = optionData.replace("#{btn_status}", "评价")
+                        optionData = optionData.replace("#{btn-class}", "btn-assess")
+                    } else if (list[i].orderStatus == 1) {
+                        optionData = optionData.replace("#{order_status}", "进行中");
+                        optionData = optionData.replace("#{order_dur}", "未知");
+                        optionData = optionData.replace("#{order_money}", "未知")
+                        optionData = optionData.replace("#{btn_status}", "查看")
+                        optionData = optionData.replace("#{btn-class}", "btn-see")
+                    }
+                    optionData = optionData.replace("#{btn-id}", list[i].id);
+                    optionData = optionData.replace("#{hk_name}", list[i].hkName);
+                    $("tbody").append(optionData);
+                }
+                $(".pages").text(json.data.pages);
+                $(".prev").click(function () {
+                    if (json.data.prePage <= 0) {
+                        // alert ("当前为第一页");
+                    } else {
+                        loadOrder(json.data.prePage)
+                    }
+                })
+
+                $(".next").click(function () {
+                    if (json.data.pageNum > json.data.pageSize) {
+                        // alert ("这是最后一页");
+                    } else {
+                        loadOrder(json.data.pageNum + 1)
+                    }
+                })
+
+                showModal();
+                // deleteOrder();
+                assessOrder();
+            }
+        })
+    }
+
+    // 查看单项订单
+    function showModal() {
+        $(".btn-see").parent().on("click", "button", function () {
+            var data = "orderID=" + $(this).attr("id");
+            $.ajax({
+                "url": "order/getOrderByID",
+                "data": data,
+                "dataType": "json",
+                "type": "Post",
+                "success": function (json) {
+                    if (json.state == 200) {
+                        if (json.data.status == -1) {
+                            $(".status").val("已完成")
+                            $(".end-time").val(formatDate(json.data.orderEndTime));
+                            $(".money").val(json.data.orderMoney)
+                        } else {
+                            $(".status").val("进行中")
+                            $(".end-time").val("未知");
+                            $(".money").val("未知")
+                        }
+                        $(".name").val(json.data.hkName);
+                        $(".begin-time").val(formatDate(json.data.orderBeginTime));
+                        $(".address").val(json.data.orderAddress)
+                    }
+                }
+            })
+            $("#myModal").modal("show");
+        })
+    }
+
+    // 评价订单
+    function assessOrder() {
+        $(".btn-assess").parent().on("click", "button", function () {
+            $("#assessModal").modal("show");
+            var orderID = $(this).attr("id");
+            submitAssess(orderID);
+        })
+    }
+
+    function submitAssess(orderID) {
+        $(".submit-assess").parent().on("click", ".submit-assess", function () {
+            var url = "order/assessOrder";
+            var data = "orderID=" + orderID + "&commentStar=" + $("input[name='assess']").val()
+                        + "&commentContent=" + $(".comment-content").val();
+            $.ajax({
+                "url": url,
+                "data": data,
+                "dataType": "json",
+                "type": "Post",
+                "success": function (json) {
+                    if (json.state == 200) {
+                        swal({
+                            title: "提示",
+                            text: "评价成功！"
+                        })
+                    }
+                }
+            })
+        })
+    }
+
+    // function deleteOrder() {
+    //     $(".btn-del").parent().on("click", "button", function () {
+    //         var data = "orderID=" + $(this).attr("id");
+    //         $.ajax({
+    //             "url": "order/deleteOrderByID",
+    //             "data": data,
+    //             "dataType": "json",
+    //             "type": "Post",
+    //             "success": function (json) {
+    //                 if (json.state == 200) {
+    //                     swal({
+    //                         title: "提示",
+    //                         text: "删除成功！"
+    //                     })
+    //                     loadOrder(1);
+    //                 }
+    //             }
+    //         })
+    //     })
+    // }
+
+    // 登录成功
+    function loginSuccess() {
+        $(".log-out").css({"display": "none"});
+        $.ajax({
+            "url": "user/loginSuccess",
+            "type": "Post",
+            "success": function (json) {
+                if (json.state == 200) {
+                    $(".log-out").css({"display": "block"});
+                    $(".log-in").css({"display": "none"});
+                    $(".register").css({"display": "none"});
+                }
+            }
+        })
+    }
+
+    // 退出系统
+    function logout() {
+        $.ajax ({
+            "url": "user/logout",
+            "type": "Post",
+            "success": function (json) {
+                if (json.state == 200) {
+                    alert("退出成功...");
+                }
+            }
+        })
+    }
+
+    function formatDate(mills) {
+        var newTime = new Date(mills);
+        var year = newTime.getFullYear();
+        var month = newTime.getMonth() + 1;
+        var day = newTime.getDate();
+        var hour = newTime.getHours();
+        var minute = newTime.getMinutes();
+        var second = newTime.getSeconds();
+        return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+    }
+</script>

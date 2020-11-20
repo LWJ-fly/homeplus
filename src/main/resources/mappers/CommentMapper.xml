@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 对用户的数据操作 -->
+<mapper namespace="dao.CommentMapper">
+
+    <select id="getCommentByOrderID" resultType="pojo.Comment">
+        SELECT
+          id AS id,
+          comment_content AS commentContent,
+          comment_star AS commentStar,
+          order_id AS orderID,
+          comment_time AS commentTime
+        FROM
+          comment
+        WHERE
+          order_id = #{orderID}
+    </select>
+
+    <insert id="insertComment" parameterType="pojo.Comment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO comment (
+          comment_content,
+          comment_star,
+          order_id,
+          comment_time
+        ) VALUES (
+          #{commentContent},
+          #{commentStar},
+          #{orderID},
+          #{commentTime}
+        )
+    </insert>
+</mapper>

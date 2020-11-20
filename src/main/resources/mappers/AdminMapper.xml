@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 后台管理员的数据操作 -->
+<mapper namespace="dao.AdminMapper">
+
+    <select id="selectAllLogin" resultType="pojo.User">
+        SELECT
+            id,
+            username,
+            password,
+            role,
+            status
+        FROM
+            login
+        ORDER BY
+            id
+    </select>
+
+    <select id="selectAllCustomer" resultType="pojo.Customer">
+        SELECT
+            id AS id,
+            cm_nickname AS cmNickname,
+            cm_password AS cmPassword,
+            cm_name AS cmName,
+            cm_sex AS cmSex,
+            cm_phone AS cmPhone,
+            cm_address AS cmAddress,
+            cm_email AS cmEmail
+        FROM
+            customer
+    </select>
+
+    <insert id="insertCustomer" parameterType="pojo.Customer" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO customer (
+            cm_nickname,
+            cm_password,
+            cm_name,
+            cm_sex,
+            cm_phone,
+            cm_address,
+            cm_email
+        ) VALUES (
+            #{cmNickname},
+            #{cmPassword},
+            #{cmName},
+            #{cmSex},
+            #{cmPhone},
+            #{cmAddress},
+            #{cmEmail}
+        )
+    </insert>
+
+    <insert id="insertAdmin" parameterType="pojo.Admin" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO admin (
+            ad_name,
+            ad_password,
+            ad_phone,
+            ad_sex
+        ) VALUES (
+            #{adName},
+            #{adPassword},
+            #{adPhone},
+            #{adSex}
+        )
+    </insert>
+
+    <update id="updateStatusLogin">
+        UPDATE
+            login
+        SET
+            status = 0
+        WHERE
+            username = #{username}
+    </update>
+
+    <select id="getOrderData" resultType="pojo.EchartsData">
+        SELECT (SELECT name FROM type WHERE id=a.type_id) AS name,a.num AS num FROM
+        (SELECT type_id,count(type_id) AS num FROM ordertab GROUP BY type_id)a
+    </select>
+
+    <select id="getAppoimentData" resultType="pojo.EchartsData">
+        SELECT app_type AS name,count(app_type) as num FROM appointment GROUP BY app_type
+    </select>
+
+    <update id="updateUserInfo">
+        UPDATE
+          login
+        SET
+          password = #{password},
+          role = #{role},
+          status = #{status}
+        WHERE
+          id = #{id}
+    </update>
+
+    <update id="updatePassword">
+        UPDATE
+          admin
+        SET
+          ad_password = #{password}
+        WHERE
+          ad_phone = #{phone}
+    </update>
+
+    <select id="getUserByPhone" resultType="pojo.User">
+        SELECT
+          id,
+          username,
+          password,
+          role,
+          status
+        FROM
+          login
+        WHERE
+          username = #{phone}
+    </select>
+</mapper>

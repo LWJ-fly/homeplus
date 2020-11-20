@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 对用户的数据操作 -->
+<mapper namespace="dao.OrderMapper">
+
+    <select id="getAllOrder" resultType="pojo.Order">
+      SELECT
+        id AS id,
+        order_status AS orderStatus,
+        order_begin_time AS orderBeginTime,
+        order_end_time AS orderEndTime,
+        order_address AS orderAddress,
+        hk_id AS hkID
+      FROM
+        orderTab
+      WHERE
+        cm_id = #{cmID}
+    </select>
+
+    <select id="getOrderByID" resultType="pojo.Order">
+        SELECT
+          order_status AS orderStatus,
+          order_begin_time AS orderBeginTime,
+          order_end_time AS orderEndTime,
+          order_phone AS orderPhone,
+          order_address AS orderAddress,
+          hk_id AS hkID,
+          cm_id AS cmID,
+          type_id AS typeID
+        FROM
+          orderTab
+        WHERE
+          id = #{id}
+    </select>
+
+    <delete id="deleteOrderByID">
+        DELETE
+        FROM
+          orderTab
+        WHERE
+          id = #{id}
+    </delete>
+
+    <insert id="insertOrder" useGeneratedKeys="true" keyProperty="id" parameterType="pojo.Order">
+        INSERT INTO orderTab (
+          order_status,
+          order_begin_time,
+          order_phone,
+          order_address,
+          cm_id,
+          hk_id
+        ) VALUES (
+          #{orderStatus},
+          #{orderBeginTime},
+          #{orderPhone},
+          #{orderAddress},
+          #{cmID},
+          #{hkID}
+        )
+    </insert>
+
+    <select id="getOrderListByHKID" resultType="pojo.Order">
+        SELECT
+          id,
+          order_status AS orderStatus,
+          order_begin_time AS orderBeginTime,
+          order_end_time AS orderEndTime,
+          order_address AS orderAddress,
+          order_phone AS orderPhone,
+          hk_id AS hkID,
+          cm_id AS cmID
+        FROM
+          orderTab
+        WHERE
+          hk_id = #{hkID}
+    </select>
+
+    <update id="updateOrderStatusByID">
+        UPDATE
+          orderTab
+        SET
+          order_status = #{status},
+          order_end_time = #{endTime}
+        WHERE
+          id = #{id}
+    </update>
+
+    <select id="getTopOrderByTypeID" resultType="java.lang.Integer">
+        SELECT
+          hk_id
+        FROM
+          ordertab
+        WHERE
+          type_id = #{type_id}
+        GROUP BY
+          hk_id
+        ORDER BY
+          id
+        limit
+          3
+    </select>
+
+    <select id="getAllTypeID" resultType="java.lang.Integer">
+        SELECT DISTINCT
+          type_id
+        FROM
+          ordertab
+    </select>
+
+    <select id="getAllCmID" resultType="java.lang.Integer">
+        SELECT DISTINCT
+          cm_id
+        FROM
+          ordertab
+    </select>
+
+    <select id="getOrderNumByTypeIDAndCmID" resultType="java.lang.Integer">
+        SELECT
+          COUNT(type_id)
+        FROM
+          ordertab
+        WHERE
+          cm_id = #{cm_id}
+        AND
+          type_id = #{type_id}
+    </select>
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 首页的数据操作 -->
+<mapper namespace="dao.IndexMapper">
+
+    <select id="getAllType" resultType="pojo.Type">
+        SELECT
+            id,
+            name,
+            image_url AS imageUrl
+        FROM
+            type
+    </select>
+
+    <select id="getAllSmallType" resultType="pojo.Type">
+        SELECT
+            id,
+            name
+        FROM
+            type_detail
+        WHERE
+            type_id = #{type_id}
+    </select>
+
+    <select id="getTopHouseKeeper" resultType="pojo.HouseKeeper">
+        SELECT
+            id,
+            hk_headPhoto AS hkHeadphoto,
+            hk_slogan AS hkSlogan,
+            hk_desc AS hkDesc,
+            hk_label AS hkLabel,
+            companyID AS companyID
+        FROM
+            housekeeper
+        WHERE
+            hk_status = 1
+    </select>
+
+    <select id="getCompanyNameByID" resultType="java.lang.String">
+        SELECT
+            name
+        FROM
+            company
+        WHERE
+            id = #{id}
+    </select>
+</mapper>

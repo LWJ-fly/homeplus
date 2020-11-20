@@ -1,0 +1,229 @@
+			/* 这是导航栏的样式 */
+			.nav {
+				float: right;
+				padding-right: 180px;
+			}
+			
+			.nav li a {
+				text-decoration: none;
+			}
+			.nav li a:hover {
+				text-decoration: underline;
+				cursor: pointer;
+			}
+
+			.nav .next-menu {
+				padding-left: 15px;
+				display: none;
+				z-index: 100;
+				position: relative;
+			}
+			.nav .next-menu li {
+				width: 60px;
+				height: 30px;
+				line-height: 30px;
+				list-style: none;
+			}
+			.nav .next-menu li a {
+				color: #777;
+			}
+			.space:hover .next-menu {
+				display: block;
+				position: absolute;
+			}
+
+			/* 这是搜索栏的样式 */
+			.container .search {
+				padding-top: 30px;
+				width: 50%;
+				margin: auto;
+			}
+            .container .search .input-group-addon {
+                background-color: #0084ff;
+                color: #fff;
+				border: 0px;
+            }
+			
+			.container .main {
+				margin-top: 40px;
+			}
+			
+			.main .icon {
+				display: block;
+				width: 25%;
+				height: 25%;
+			}
+			
+			/* 这里是左侧菜单的样式 */
+			.main .list-group {
+				margin-bottom: 0px;
+			}
+
+			.hot {
+				display: block;
+			}
+
+			.type, .first-type{
+                color: #0084ff;
+				padding-left: 15px;
+				padding-right: 0px;
+                
+			}
+            .first-type span {
+                padding-left: 10px;
+                font-size: 16px;
+                font-weight: bold;
+            }
+			.first-type:hover, .small-type li {
+				cursor: pointer;
+			}
+
+			.small-type li {
+                border-bottom: 0px;
+				padding-left: 65px;
+			}
+            .small-type li:hover {
+                background-color: #c6ddf1;
+            }
+            .small-type li a {
+                text-decoration: none;
+            }
+
+			.middle {
+				padding-left: 0px;
+				padding-right: 0px;
+			}
+			
+			/* 这是筛选条件的样式 */
+			.select{
+				border: #ddd 1px solid;
+				border-radius: 4px;
+				font-size: 14px;
+				padding-left: 0px;
+			}
+			.select li {
+				list-style: none;
+				padding: 10px 0 5px 100px;
+			}
+			.select .select-list {
+				border-bottom:#eee 1px dashed;
+			}
+			.select dl{
+				zoom:1;
+				position:relative;
+				line-height:24px;
+			}
+			.select dl:after {
+				content:" ";
+				display:block;
+				clear:both;
+				height:0;
+				overflow:hidden;
+			}
+			.select dt { 
+				width:100px;
+				margin-bottom:5px;
+				position:absolute;
+				top:0;left:-100px;
+				text-align:right;
+				color:#0084ff;
+				height:24px;
+				line-height:24px
+			}
+			.select dd{
+				float:left;
+				display:inline;
+				margin:0 0 5px 5px;
+			}
+			.select a{
+				display:inline-block;
+				white-space:nowrap;
+				height:24px;
+				padding:0 10px;
+				text-decoration:none;
+				color: #039;
+				border-radius:2px;
+			}
+			.select a:hover{
+				color: #f60;
+				background-color: #f3edc2
+			}
+			.select .selected a{
+				color: #fff;
+				background-color: #0084ff;
+			}
+			.select-result dt{
+				font-weight:bold;
+			}
+			.select-no{
+				color: #999;
+			}
+			.select .select-result a{
+				background: #0084ff;
+			}
+			.select .select-result a:hover{
+				background-position:right -15px;
+			}
+			
+			/* 这是预约服务的样式 */
+
+			.appoint .input-line {
+				padding-left: 2px;
+				padding-right: 2px;
+				margin-bottom: 10px;
+			}
+			
+			.appoint h4 {
+				color: #fff;
+				padding-left: 15px;
+				padding-top: 10px;
+				padding-bottom: 10px;
+				margin-top: 0px;
+				background-color: #0084ff;
+				font-weight: bold;
+				border-radius: 5px;
+			}
+
+			/* 这是家政人员列表的样式 */
+			.housekeeper-list {
+				margin-top: 20px;
+			}
+			
+			.housekeeper-list .badge {
+				background-color: #0084ff;
+			}
+
+			.housekeeper-list-hour>span, .housekeeper-list-repair>span, .housekeeper-list-move>span {
+				font-size: 20px;
+				color: #0084ff;
+				font-weight: bold;
+				padding-left: 10px;
+			}
+			
+			.housekeeper-list-item {
+				border-radius: 5px;
+				margin-bottom: 10px;
+			}
+			.housekeeper-list-item:hover {
+				background-color: #c6ddf1;
+			}
+			
+			.housekeeper-list-item .go-single{
+				font-weight: bold;
+				margin-left: 10%;
+				margin-top: 35%;
+				background-color: #0084ff;
+				border: 0px;
+			}
+			
+			.housekeeper-list-item .headImg img {
+				margin-top: 10px;
+				margin-bottom: 10px;
+			}
+
+
+
+			.footer {
+				color: #337ab7;
+				margin: 20px auto;
+			}

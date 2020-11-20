@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 对个人资料的数据操作 -->
+<mapper namespace="dao.PersonMapper">
+
+    <!-- 个人资料中编辑个人资料 -->
+    <select id="selectCustomer" resultType="pojo.Customer">
+        SELECT
+          cm_name AS cmName,
+          cm_nickname AS cmNickname,
+          cm_phone AS cmPhone,
+          cm_email AS cmEmail,
+          cm_headPhoto AS cmHeadPhoto
+        FROM
+          customer
+        WHERE
+          cm_phone = #{phone}
+    </select>
+
+    <select id="selectCustomerByID" resultType="pojo.Customer">
+        SELECT
+          id,
+          cm_name AS cmName,
+          cm_nickname AS cmNickname,
+          cm_phone AS cmPhone,
+          cm_email AS cmEmail,
+          cm_headPhoto AS cmHeadPhoto
+        FROM
+          customer
+        WHERE
+          id = #{id}
+    </select>
+
+    <!-- 更新用户的资料 -->
+    <update id="updateCustomer">
+       UPDATE
+           customer
+       SET
+           cm_nickname = #{cmNickname},
+           cm_phone = #{cmPhone},
+           cm_email = #{cmEmail},
+           cm_headPhoto = #{cmHeadPhoto}
+       WHERE
+           cm_phone = #{username}
+    </update>
+
+    <!-- 更新消费者的密码 -->
+    <update id="updatePassword">
+        UPDATE
+          customer
+        SET
+          cm_password = #{newPassword}
+        WHERE
+          cm_phone = #{username}
+    </update>
+
+    <select id="selectCertifyCustomer" resultType="pojo.Customer">
+        SELECT
+          cm_name AS cmName,
+          cm_cardID AS cmCardID,
+          cm_cardPhoto AS cmCardPhoto
+        FROM
+          customer
+        WHERE
+          cm_phone = #{username}
+    </select>
+
+    <update id="certifyCustomer">
+        UPDATE
+          customer
+        SET
+          cm_name = #{cm_name},
+          cm_cardID = #{cm_cardID},
+          cm_cardPhoto = #{cm_cardPhoto},
+          cm_status = #{cm_status}
+        WHERE
+          cm_phone = #{username}
+    </update>
+
+    <select id="getCertifyStatus" resultType="java.lang.Integer">
+        SELECT
+          cm_status
+        FROM
+          customer
+        WHERE
+          cm_phone = #{phone}
+    </select>
+
+
+    <!-- 个人资料中对于消息的操作 -->
+    <select id="getAllMessage" resultType="pojo.Message">
+        SELECT
+            id,
+            message_content AS content,
+            create_time AS createdTime
+        FROM
+            message
+    </select>
+
+    <select id="getSingleMessage" resultType="java.lang.String">
+        SELECT
+            message_content
+        FROM
+            message
+        WHERE
+            id = #{id}
+    </select>
+
+    <delete id="deleteSingleMessage" parameterType="java.lang.Integer">
+        DELETE FROM
+            message
+        WHERE
+            id = #{id}
+    </delete>
+
+    <select id="getAllCustomerByStatus" resultType="pojo.Customer">
+        SELECT
+          id AS id,
+          cm_name AS cmName,
+          cm_phone AS cmPhone,
+          cm_status AS cmStatus,
+          cm_cardID AS cmCardID,
+          cm_cardPhoto AS cmCardPhoto
+        FROM
+          customer
+        WHERE
+          cm_status != 0
+    </select>
+
+    <select id="getCustomerByID" resultType="pojo.Customer">
+        SELECT
+          cm_name AS cmName,
+          cm_phone AS cmPhone,
+          cm_status AS cmStatus,
+          cm_cardID AS cmCardID,
+          cm_cardPhoto AS cmCardPhoto
+        FROM
+          customer
+        WHERE
+          id = #{id}
+    </select>
+
+    <update id="updateCustomerStatusByID">
+        UPDATE
+          customer
+        SET
+          cm_status = #{status}
+        WHERE
+          id = #{id}
+    </update>
+</mapper>

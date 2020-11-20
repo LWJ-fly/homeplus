@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商家订单页</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/order.css">
+    <link rel="stylesheet" href="css/sweetalert.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/sweeralert.min.js"></script>
+</head>
+<body>
+    <!-- 页面上的最上面导航 -->
+    <nav class="navbar navbar-default">
+    <div class="navbar-header">
+        <a href="index.html"></a>
+    </div>
+
+    <div>
+        <ul class="nav navbar-nav">
+            <li>
+                <a href="index.html">
+                    <span class="glyphicon glyphicon-home"></span>
+                    首页
+                </a>
+            </li>
+            <li class="register">
+                <a href="register.html">
+                    <span class="glyphicon glyphicon-user"></span>
+                    注册
+                </a>
+            </li>
+            <li class="log-in">
+                <a href="login.html">
+                    <span class="glyphicon glyphicon-log-in"></span>
+                    登录
+                </a>
+            </li>
+            <li class="log-out">
+                <a href="login.html">
+                    <span class="glyphicon glyphicon-log-out"></span>
+                    退出
+                </a>
+            </li>
+            <li class="space">
+                <a href="#">个人中心</a>
+                <ul class="next-menu">
+                    <li>
+                        <a href="person.html">个人资料</a>
+                    </li>
+                    <li>
+                        <a href="order.html">我的订单</a>
+                    </li>
+                    <li>
+                        <a href="cm_app.html">我的预约</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="space">
+                <a href="#">家政人员中心</a>
+                <ul class="next-menu">
+                    <li>
+                        <a href="hk_person.html">商家资料</a>
+                    </li>
+                    <li>
+                        <a href="hk_app.html">预约列表</a>
+                    </li>
+                    <li>
+                        <a href="hk_order.html">我的订单</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+    <div class="container">
+        <h3>我的订单</h3>
+        <div>
+
+            <table class="table table-condensed table-hover ">
+                <thead>
+                    <tr style="height: 50px; line-height: 50px; background-color: #0084ff; color: #fff">
+                        <th>编号</th>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        <th>地点</th>
+                        <th>预留电话</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--<tr>-->
+                        <!--<th>01</th>-->
+                        <!--<th>2019-02-14</th>-->
+                        <!--<th>2020-03-14</th>-->
+                        <!--<th>南京-寻乌-互通</th>-->
+                        <!--<th>200</th>-->
+                        <!--<th>18796283605</th>-->
+                        <!--<th>-->
+                            <!--<button class="btn btn-primary">完成</button>-->
+                            <!--<button class="btn btn-primary">取消</button>-->
+                            <!--<button class="btn btn-primary">删除</button>-->
+                        <!--</th>-->
+                    <!--</tr>-->
+                </tbody>
+            </table>
+
+            <!-- 取消模态框 -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                取消订单
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <form action="#" role="form">
+                                <div class="form-group">
+                                    <div class="input-line">
+                                        取消原因：
+                                        <input  class="reason form-control" type="text">
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                            </button>
+                            <button type="button" class="submit-reason btn btn-primary" data-dismiss="modal">提交
+                            </button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        loginSuccess();
+        $(".log-out").click (function () {
+            logout();
+        })
+        loadHKOrder();
+    })
+
+    // 加载家政人员的所有订单
+    function loadHKOrder() {
+        var url = "order/getOrderListByHKID";
+        $.ajax ({
+            "url": url,
+            "type": "Post",
+            "success": function (json) {
+                if (json.state == 200) {
+                    var list = json.data;
+                    for (var i = 0; i < list.length; i ++) {
+                        var optionData = "<tr>\n" +
+                            "<th>#{id}</th>\n" +
+                            "<th>#{beginTime}</th>\n" +
+                            "<th>#{endTime}</th>\n" +
+                            "<th>#{address}</th>\n" +
+                            // "<th>#{money}</th>\n" +
+                            "<th>#{phone}</th>\n" +
+                            "<th>\n" +
+                            "<button id='#{accept-btn}' style='display: #{accept-status}' class=\"submit-accept btn btn-primary\">接受</button>\n" +
+                            "<button id='#{finish-btn}' style='display: #{finish-status}' class=\"submit-finish btn btn-primary\">完成</button>\n" +
+                            "<button id='#{cancel-btn}' style='display: #{cancel-status}' class=\"submit-cancel btn btn-primary\">取消</button>\n" +
+                            "<button id='#{delete-btn}' style='display: #{delete-status}' class=\"submit-delete btn btn-primary\">删除</button>\n" +
+                            "</th>\n" +
+                            "</tr>";
+                        if (list[i].orderStatus == 0) {
+                            optionData = optionData.replace("#{endTime}", formatDate(list[i].orderEndTime));
+                            optionData = optionData.replace("#{accept-status}", "none");
+                            optionData = optionData.replace("#{finish-status}", "none");
+                            optionData = optionData.replace("#{cancel-status}", "none");
+                            optionData = optionData.replace("#{delete-status}", "block");
+                        } else if (list[i].orderStatus == 1) {
+                            optionData = optionData.replace("#{endTime}", "未知");
+                            optionData = optionData.replace("#{accept-status}", "none");
+                            optionData = optionData.replace("#{finish-status}", "block");
+                            optionData = optionData.replace("#{cancel-status}", "none");
+                            optionData = optionData.replace("#{delete-status}", "none");
+                        } else if (list[i].orderStatus == -1) {
+                            optionData = optionData.replace("#{endTime}", "未知");
+                            optionData = optionData.replace("#{accept-status}", "block");
+                            optionData = optionData.replace("#{finish-status}", "none");
+                            optionData = optionData.replace("#{cancel-status}", "block");
+                            optionData = optionData.replace("#{delete-status}", "none");
+                        }
+                        optionData = optionData.replace("#{id}", i + 1);
+                        optionData = optionData.replace("#{beginTime}", formatDate(list[i].orderBeginTime));
+                        optionData = optionData.replace("#{address}", list[i].orderAddress);
+                        optionData = optionData.replace("#{phone}", list[i].orderPhone);
+                        // optionData = optionData.replace("#{phone}", list[i].orderPhone);
+                        optionData = optionData.replace("#{accept-btn}", list[i].id);
+                        optionData = optionData.replace("#{finish-btn}", list[i].id);
+                        optionData = optionData.replace("#{cancel-btn}", list[i].id);
+                        optionData = optionData.replace("#{delete-btn}", list[i].id);
+                        $("tbody").append(optionData);
+                    }
+                    acceptOrder();
+                    finishOrder();
+                    cancelOrder();
+                    deleteOrder();;
+                }
+            }
+        })
+    }
+
+    function acceptOrder() {
+        $(".submit-accept").parent().on("click", ".submit-accept", function () {
+            var url = "order/acceptOrder";
+            var idVal = $(this).attr("id");
+            $.ajax ({
+                "url": url,
+                "data": "id=" + idVal,
+                "dataType": "json",
+                "type": "Post",
+                "success": function (json) {
+                    if (json.state == 200) {
+                        swal ({
+                            title: "提醒",
+                            text: "接受成功"
+                        })
+                    }
+
+                }
+            })
+        })
+    }
+
+    function finishOrder() {
+        $(".submit-finish").parent().on("click", ".submit-finish", function () {
+            var url = "order/finishOrder";
+            var idVal = $(this).attr("id");
+            $.ajax ({
+                "url": url,
+                "data": "id=" + idVal,
+                "dataType": "json",
+                "type": "Post",
+                "success": function (json) {
+                    if (json.state == 200) {
+                        swal ({
+                            title: "提醒",
+                            text: "完成该项订单"
+                        })
+                    }
+                }
+            })
+        })
+    }
+
+    function cancelOrder() {
+        $(".submit-cancel").parent().on("click", ".submit-cancel", function() {
+            var idVal = $(this).attr("id");
+            $.ajax ({
+                "url": "order/cancelOrder",
+                "data": "id=" + idVal,
+                "dataType": "json",
+                "type": "Post",
+                "success": function (json) {
+                    if (json.state == 200) {
+                        swal ({
+                            title: "提醒",
+                            text: "取消成功"
+                        })
+                    }
+                }
+            })
+        })
+    }
+
+    function deleteOrder() {
+        $(".submit-delete").parent().on("click", ".submit-delete", function() {
+            var url = "";
+            var idVal = $(this).attr("id");
+            $.ajax ({
+                "url": url,
+                "data": "id=" + idVal,
+                "dataType": "json",
+                "type": "Post",
+                "success": function (json) {
+                    swal ({
+                        title: "提醒",
+                        text: "删除成功"
+                    })
+                }
+            })
+        })
+    }
+
+
+    function loginSuccess() {
+        $(".log-out").css({"display": "none"});
+        $.ajax({
+            "url": "user/loginSuccess",
+            "type": "Post",
+            "success": function (json) {
+                if (json.state == 200) {
+                    $(".log-out").css({"display": "block"});
+                    $(".log-in").css({"display": "none"});
+                    $(".register").css({"display": "none"});
+                }
+            }
+        })
+    }
+
+    // 退出系统
+    function logout() {
+        $.ajax ({
+            "url": "user/logout",
+            "type": "Post",
+            "success": function (json) {
+                if (json.state == 200) {
+                    alert("退出成功...");
+                }
+            }
+        })
+    }
+
+    function formatDate(mills) {
+        var newTime = new Date(mills);
+        var year = newTime.getFullYear();
+        var month = newTime.getMonth() + 1;
+        var day = newTime.getDate();
+        var hour = newTime.getHours();
+        var minute = newTime.getMinutes();
+        var second = newTime.getSeconds();
+        return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+    }
+</script>

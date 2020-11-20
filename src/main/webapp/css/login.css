@@ -1,0 +1,82 @@
+/*导航栏的样式*/
+.nav {
+	float: right;
+	padding-right: 180px;
+}
+.nav li a {
+	text-decoration: none;
+}
+.nav li a:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+/*限制主体内容*/
+.container {
+	max-width: 600px;
+	margin-top: 50px;
+}
+
+/*标题的样式*/
+h2 {
+	color: #0084ff;
+	font-weight: bold;
+	border-bottom: 2px solid #aba7a7;
+	padding-left: 30px;
+	padding-bottom: 10px;
+	margin-top: 0px;
+	letter-spacing: 5px;
+}
+/*表单的样式*/
+form {
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 20px;
+}
+.form-group {
+	margin-bottom: 20px;
+}
+
+/*验证码的样式*/
+form .col-md-10 .code1 {
+	padding-left: 0px;
+	padding-right: 5px;
+}
+form .col-md-10 .code2 {
+	padding-left: 5px;
+	padding-right: 0px;
+}
+
+/*提示信息的样式*/
+.container .info {
+	height: 45px;
+	padding-left: 125px;
+}
+
+.container .info span {
+	display: none;
+}
+
+/*注册链接的样式*/
+.container .to-register {
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.container .to-register a {
+	color: #0084ff;
+	text-decoration: none;
+}
+
+/*按钮样式*/
+.btn {
+	width: 65px;
+	margin-left: 15px;
+}
+
+/*尾部的样式*/
+.footer {
+	color: #0084ff;
+	margin: 20px auto;
+}
+

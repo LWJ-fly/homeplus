@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人认证</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <script src="../js/jquery.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <style>
+        .container {
+            max-width: 500px;
+        }
+        h3 {
+            color: #0084ff;
+            font-weight: bold;
+        }
+        label {
+            font-weight: lighter;
+        }
+        form>div {
+            margin-top: 10px;
+        }
+        .btn {
+            margin-left: 35%;
+        }
+
+        /* 手持身份证的样式 */
+        #myFile {
+            opacity: 0;
+        }
+        img {
+            width: 120px;
+            height: 120px;
+            border: 1px solid #f7f7f7;
+            margin-top: 10px;
+        }
+        #upload-label{
+            text-align: center;
+            background-color: #0084ff;
+            color: #fff;
+            display: block;
+            width: 120px;
+            height: 35px;
+            line-height: 35px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>公司认证</h3>
+        <form id="certify" action="#" method="post" enctype="multipart/form-data">
+            <div>
+                <label for="">公司姓名:</label>
+                <div>
+                    <input name="name" type="text" class="form-control">
+                </div>
+            </div>
+            <div>
+                <label for="">公司手机号:</label>
+                <div>
+                    <input name="phone" type="text" class="form-control">
+                </div>
+            </div>
+
+            <div>
+                <label for="">公司地址:</label>
+                <div>
+                    <input name="address" type="text" class="form-control">
+                </div>
+            </div>
+
+            <div>
+                <label for="">公司营业执照注册号:</label>
+                <div>
+                    <input name="regID" type="text" class="form-control">
+                </div>
+            </div>
+
+            <div>
+                <label for="">公司营业执照注册照片:</label>
+                <div>
+                    <label id="upload-label" for="myFile">上传营业执照注册图片</label>
+                    <img for="myFile" id="head-img" src="../images/list-head.png" alt="默认图片">
+                    <input name="regPhoto" type="file" id="myFile">
+                </div>
+            </div>
+            <div>
+                <button class="submit-certify btn btn-primary">确认修改</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        previewHead();
+
+        // 点击发送认证
+        $(".submit-certify").click(function () {
+            certifyCompany();
+        })
+    })
+
+
+
+    function certifyCompany() {
+        var url = "hk/certifyCompany";
+        var formData = new FormData($("#certify")[0]);
+        $.ajax ({
+            "url": url,
+            "data": formData,
+            "dataType": "json",
+            "type": "Post",
+            "contentType": false,
+            "processData": false,
+            "success": function (json) {
+                if (json.state == 200) {
+                    swal({
+                        title: "提醒",
+                        text: "提交成功！"
+                    })
+                } else {
+                    alert();
+                }
+            }
+        })
+    }
+
+    // 头像预览
+    function previewHead() {
+        var file = document.getElementById("myFile");
+        file.onchange = function(){  // 文本框内容改变时触发
+            var files = this.files; // 获取文件的数量
+            for(var i=0;i<files.length;i++){
+                readers(files[i])
+            }
+        }
+        function readers(fil){
+            var reader = new FileReader();  // 异步读取存储在用户计算机上的文件
+            reader.readAsDataURL(fil); // 开始读取指定的Blob对象或File对象中的内容
+            reader.onload = function(){
+                document.getElementById("head-img").src = reader.result;  // 添加图片到指定容器中
+            };
+        }
+    }
+</script>
+

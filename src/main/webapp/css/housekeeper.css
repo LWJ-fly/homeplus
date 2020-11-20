@@ -1,0 +1,155 @@
+.container {
+    max-width: 700px;
+    border: 2px solid #efefef;
+    border-top: 2px solid #0084ff;
+    margin-top: 20px;
+    padding-top: 20px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+#head {
+    border-bottom: 1px solid #efefef;
+    padding-bottom: 20px;
+}
+#head>img {
+    border: 1px solid #efefef;
+    margin-left: 20px;
+}
+
+#title>h4 {
+    width: 300px;
+    display: inline-block;
+    margin-left: 30px;
+    font-weight: bold;
+}
+#title>button {
+    margin-left: 40px;
+}
+
+#title .modal-body .input-line {
+    margin-bottom: 20px;
+}
+#title .modal-body .input-line .col-md-4 {
+    margin-bottom: 20px;
+}
+#title .modal-body .input-line .province {
+    padding-left: 0px;
+}
+#title .modal-body .input-line .area {
+    padding-right: 0px;
+}
+
+#desc {
+    border-bottom: 2px solid #0084ff;
+}
+
+#detail {
+    padding: 20px;
+}
+#detail>div {
+    padding-top: 15px;
+}
+.phone {
+    color: #0084ff;
+    font-size: 22px;
+}
+#detail input {
+    margin-left: 267px;
+}
+
+#diff {
+    background-color: #efefef;
+    height: 40px;
+    padding-left: 0px;
+    margin-bottom: 0px;
+}
+
+#diff li {
+    list-style: none;
+    height: 40px;
+    line-height: 40px;
+    float: left;
+    font-size: 16px;
+    padding-left: 20px;
+    padding-right: 20px;
+    cursor: pointer;
+}
+#diff-one {
+    background-color: #0084ff;
+    color: #fff;
+}
+
+/* 商家介绍 */
+#housekeeper-desc  li {
+    padding-top: 10px;
+    list-style: none;
+}
+#housekeeper-desc h3 {
+    color: #0084ff;
+    font-weight: bold;
+}
+
+/* 评论区的样式 */
+#comments h3 {
+    color: #0084ff;
+    font-weight: bold;
+}
+#comments .percent {
+    margin-left: 70px;
+    display: inline-block;
+}
+#comments .percent span {
+    font-size: 26px;
+    color: #0084ff;
+}
+#comments .comment-content {
+    display: inline-block;
+    margin-left: 40px;
+}
+#comments ul>li {
+    list-style: none;
+}
+#comments ul>li>div {
+    display: inline-block;
+}
+
+#comments .single-comment {
+    border-top: 1px solid #efefef;
+    border-bottom: 1px solid #efefef;
+    padding: 20px 20px 20px 20px;
+}
+#comments .single-comment div {
+    padding-top: 10px;
+}
+#comments .single-comment-author {
+    float: right;
+}
+
+/* 页码的样式 */
+.page {
+    float: right;
+    margin-top: 10px;
+}
+.prev, .next {
+    display: inline-block;
+    width: 60px;
+    height: 26px;
+    border: 1px solid #888888;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.next {
+    margin-right: 20px;
+}
+#pageNum {
+    width: 26px;
+}
+#confPageNum {
+    width: 52px;
+    height: 26px;
+    color: #fff;
+    background-color: #0084ff;
+    border: 0px;
+    border-radius: 5px;
+}
